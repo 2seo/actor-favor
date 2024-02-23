@@ -17,6 +17,8 @@ const getList = (movieName) => {
   if (movieName === null || movieName === "") {
     alert("영화 제목을 입력하세요.")
   } else {
+    const infoSection = document.querySelector(".info-section");
+    infoSection.innerHTML="";
     fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=${key}&movieNm=${movieName}`)
       .then(res => res.json())
       .then(data => {
@@ -46,12 +48,25 @@ const returnList = (movieName, result) => {
       getMovieInfo(btn.id);
     })
   })
-
 }
 
 const getMovieInfo = (movieCode) => {
   fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=${key}&movieCd=${movieCode}`)
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => {
+      returnInfo(data.movieInfoResult.movieInfo)
+      console.log(data.movieInfoResult.movieInfo)
+    })
     .catch(error => console.log(error));
+};
+
+const returnInfo = (info) => {
+  const infoSection = document.querySelector(".info-section");
+  infoSection.innerHTML = `
+    <span>제목: ${info.movieNm}</span>
+    <span>장르: ${info.genres.map((g)=> {return(g.genreNm)})}</span>
+    <span>감독: ${info.directors.map((d)=>{return(d.peopleNm)})}</span>
+    <span>주연: ${info.actors.map((a)=>{return(a.peopleNm)})}</span>
+    <span>개봉일: ${info.openDt}</span>
+  `
 }
