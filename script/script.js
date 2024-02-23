@@ -9,10 +9,6 @@ searchBtn.addEventListener('click', () => {
   getList(value);
 });
 
-var resultSection = document.querySelector(".result-section");
-var results = resultSection.querySelectorAll(".results");
-var buttons = resultSection.querySelectorAll("button");
-
 const getList = (movieName) => {
   if (movieName === null || movieName === "") {
     alert("영화 제목을 입력하세요.")
@@ -26,7 +22,7 @@ const getList = (movieName) => {
       })
       .catch(error => console.log(error));
   }
-}
+};
 const returnList = (movieName, result) => {
   const resultSection = document.querySelector(".result-section");
   resultSection.innerHTML = `
@@ -48,8 +44,7 @@ const returnList = (movieName, result) => {
       getMovieInfo(btn.id);
     })
   })
-}
-
+};
 const getMovieInfo = (movieCode) => {
   fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=${key}&movieCd=${movieCode}`)
     .then(res => res.json())
@@ -59,7 +54,6 @@ const getMovieInfo = (movieCode) => {
     })
     .catch(error => console.log(error));
 };
-
 const returnInfo = (info) => {
   const infoSection = document.querySelector(".info-section");
   infoSection.innerHTML = `
@@ -69,4 +63,4 @@ const returnInfo = (info) => {
     <span>주연: ${info.actors.map((a)=>{return(a.peopleNm)})}</span>
     <span>개봉일: ${info.openDt}</span>
   `
-}
+};
